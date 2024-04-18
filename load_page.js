@@ -326,10 +326,10 @@ document.querySelector("#close-feedback-container").addEventListener("click", ()
   document.querySelector('#feedbackcontainer').classList.add('slide-out');
 });
 
-document.querySelector("#copyButton").addEventListener("click", () => {
+/*document.querySelector("#copyButton").addEventListener("click", () => {
   let copyText = document.getElementById("evasysTAN");
   copyText.select();
   document.execCommand("copy");
-});
+});*/
 
 window.addEventListener("load", load_page);
