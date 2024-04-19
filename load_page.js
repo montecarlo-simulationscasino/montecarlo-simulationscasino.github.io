@@ -309,6 +309,8 @@ const load_page = () => {
         info_container();
       };
     } else {
+      clearInterval(loading_interval);
+      welcome.innerHTML = "parameter error";
       console.error("acid not found in url parameters");
     };
   };
