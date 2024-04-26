@@ -109,7 +109,7 @@ const load_page = () => {
 
     let feedbackButton = document.createElement("button");
     feedbackButton.classList.add("action-button");
-    feedbackButton.innerHTML = "Feedback senden";
+    feedbackButton.innerHTML = "Getränke anzeigen";
     feedbackButton.addEventListener("click", () => {
       document.querySelector('#feedbackcontainer').classList.remove('slide-out');
       document.querySelector('#feedbackcontainer').classList.add('slide-in');
