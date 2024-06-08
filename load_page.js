@@ -1,3 +1,10 @@
+const messageConfig = {
+  showDate: false,
+  showCountdown: false,
+  nextDate: new Date("Apr 26, 2024 18:30:00"),
+  text: "Leider findet momentan kein Casino Spieleabend statt.",
+};
+
 const dateFormat = Intl.DateTimeFormat("de-DE", {
   day: "2-digit",
   month: "2-digit",
@@ -19,8 +26,6 @@ const dateTimeFormat = Intl.DateTimeFormat("de-DE", {
 
 const load_page = () => {
   const info_container = () => {
-    let nextDate = new Date("Apr 26, 2024 18:30:00");
-
     let maincontainer = document.createElement("div");
     maincontainer.classList.add("maincontainer");
 
@@ -31,23 +36,27 @@ const load_page = () => {
 
     let text = document.createElement("div");
     text.classList.add("textcontainer", "centeredtext");
-    text.innerHTML = "Leider findet momentan kein Casino Spieleabend statt.<br>Der nächste Termin ist: ";
+    text.innerHTML = messageConfig.text;
     maincontainer.appendChild(text);
 
-    let displayDate = document.createElement("span");
-    displayDate.classList.add("date");
-    displayDate.id = "next-date";
-    displayDate.innerHTML = dateTimeFormat.format(nextDate);
-    text.appendChild(displayDate);
+    if (messageConfig.showDate) {
+      let displayDate = document.createElement("span");
+      displayDate.classList.add("date");
+      displayDate.id = "next-date";
+      displayDate.innerHTML = dateTimeFormat.format(messageConfig.nextDate);
+      text.appendChild(displayDate);
+    };
 
-    let lineBreak = document.createElement("br");
-    text.appendChild(lineBreak);
+    if (messageConfig.showCountdown) {
+      let lineBreak = document.createElement("br");
+      text.appendChild(lineBreak);
 
-    let countdown = document.createElement("div");
-    countdown.classList.add("countdown");
-    countdown.id = "next-date-countdown-container";
-    countdown.innerHTML = "loading countdown";
-    text.appendChild(countdown);
+      let countdown = document.createElement("div");
+      countdown.classList.add("countdown");
+      countdown.id = "next-date-countdown-container";
+      countdown.innerHTML = "loading countdown";
+      text.appendChild(countdown);
+    };
 
     let placeholder = document.createElement("div");
     placeholder.classList.add("placeholder");
@@ -55,24 +64,25 @@ const load_page = () => {
 
     document.body.appendChild(maincontainer);
 
+    if (messageConfig.showCountdown) {
+      let countDownDate = messageConfig.nextDate.getTime();
+      let countdownInterval = setInterval(function() {
 
-    let countDownDate = nextDate.getTime();
-    let countdownInterval = setInterval(function() {
+        let now = new Date().getTime();
+        let distance = countDownDate - now;
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      let now = new Date().getTime();
-      let distance = countDownDate - now;
-      let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.querySelector("#next-date-countdown-container").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
-      document.querySelector("#next-date-countdown-container").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-
-      if (distance <= 0) {
-        clearInterval(countdownInterval);
-        document.querySelector("#next-date-countdown-container").innerHTML = "jetzt";
-      }
-    }, 1000);
+        if (distance <= 0) {
+          clearInterval(countdownInterval);
+          document.querySelector("#next-date-countdown-container").innerHTML = "jetzt";
+        }
+      }, 1000);
+    };
   };
 
   const generate_chart_data = (history) => {
